@@ -1,7 +1,9 @@
-package souza.carlos.cp.modelo;
+package souza.carlos.cm.modelo;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import souza.carlos.cm.ExplosaoException;
 
 public class Campo {
 
@@ -14,12 +16,12 @@ public class Campo {
 	
 	private List<Campo> vizinhos = new ArrayList<>();
 	
-	public Campo(int linha, int coluna) {
+	Campo(int linha, int coluna) {
 		this.linha = linha;
 		this.coluna = coluna;
 	}
 	
-	public boolean adicionarVizinho(Campo vizinho) {
+	boolean adicionarVizinho(Campo vizinho) {
 		boolean linhaDiferente = this.linha != vizinho.linha;
 		boolean colunaDiferente = this.coluna != vizinho.coluna;
 		boolean diagonal = linhaDiferente && colunaDiferente;
@@ -37,5 +39,41 @@ public class Campo {
 		} else {
 			return false;
 		}
+	}
+	
+	void alterarMarcao() {
+		if(!aberto) {
+			this.marcado = !marcado;
+		}
+	}
+	
+	boolean abrir() {
+		if(!aberto && !marcado) {
+			this.aberto = true;
+			
+			if(minado) {
+				throw new ExplosaoException();
+			}
+			
+			if(vizinhacaSegura()) {
+				vizinhos.forEach(v -> v.abrir());
+			}
+			
+			return true;
+		} else {
+			return false;			
+		}		
+	}
+	
+	boolean vizinhacaSegura() {
+		return vizinhos.stream().noneMatch(v -> v.minado);
+	}
+	
+	void minar() {
+		this.minado = true;
+	}
+	
+	public boolean isMarcado() {
+		return marcado;
 	}
 }

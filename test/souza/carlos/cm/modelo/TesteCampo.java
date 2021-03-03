@@ -1,11 +1,11 @@
-package souza.carlos.modulo;
+package souza.carlos.cm.modelo;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import souza.carlos.cp.modelo.Campo;
+import souza.carlos.cm.ExplosaoException;
 
 public class TesteCampo {
 
@@ -57,4 +57,50 @@ public class TesteCampo {
 		boolean resultado = campo.adicionarVizinho(vizinho);
 		assertFalse(resultado);
 	}
+	
+	@Test
+	void valorPadraoAtributoMarcado() {
+		assertFalse(campo.isMarcado());
+	}
+	
+	@Test
+	void alternarMarcacao() {
+		campo.alterarMarcao();
+		assertTrue(campo.isMarcado());
+	}
+	
+	@Test
+	void alternarMarcacaoDuasX() {
+		campo.alterarMarcao();
+		campo.alterarMarcao();
+		assertFalse(campo.isMarcado());
+	}
+	
+	@Test
+	void abrirNaoMinadoNaoMarcado() {
+		assertTrue(campo.abrir());
+	}
+	
+	@Test
+	void abrirNaoMinadoMarcado() {
+		campo.alterarMarcao();
+		assertFalse(campo.abrir());
+	}
+	
+	@Test
+	void abrirMinadoMarcado() {
+		campo.alterarMarcao();
+		campo.minar();
+		assertFalse(campo.abrir());
+	}
+	
+	@Test
+	void abrirMinadoNaoMarcado() {
+		campo.minar();
+		
+		assertThrows(ExplosaoException.class, () -> {
+			campo.abrir();
+		});
+	}
+	
 }

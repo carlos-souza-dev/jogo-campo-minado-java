@@ -65,14 +65,14 @@ public class TesteCampo {
 	
 	@Test
 	void alternarMarcacao() {
-		campo.alterarMarcao();
+		campo.alterarMarcado();
 		assertTrue(campo.isMarcado());
 	}
 	
 	@Test
 	void alternarMarcacaoDuasX() {
-		campo.alterarMarcao();
-		campo.alterarMarcao();
+		campo.alterarMarcado();
+		campo.alterarMarcado();
 		assertFalse(campo.isMarcado());
 	}
 	
@@ -83,15 +83,31 @@ public class TesteCampo {
 	
 	@Test
 	void abrirNaoMinadoMarcado() {
-		campo.alterarMarcao();
+		campo.alterarMarcado();
 		assertFalse(campo.abrir());
 	}
 	
 	@Test
 	void abrirMinadoMarcado() {
-		campo.alterarMarcao();
+		campo.alterarMarcado();
 		campo.minar();
 		assertFalse(campo.abrir());
+	}
+	
+	@Test
+	void abrirComVizinhos() {
+		Campo campo11 = new Campo(1, 1);
+		Campo campo12 = new Campo(1, 1);
+		campo12.minar();
+		
+		Campo campo22 = new Campo(2, 2);
+		campo22.adicionarVizinho(campo11);
+		campo22.adicionarVizinho(campo12);
+
+		campo.adicionarVizinho(campo22);
+		campo.abrir();
+		
+		assertTrue(campo22.isAberto() && campo11.isFechado());		
 	}
 	
 	@Test
@@ -101,6 +117,81 @@ public class TesteCampo {
 		assertThrows(ExplosaoException.class, () -> {
 			campo.abrir();
 		});
+	}	
+	
+	@Test
+	void getLinhas() {
+		Campo campo13 = new Campo(1, 1);
+		
+		assertTrue(campo13.getLinha() == 1 && campo13.getColuna() == 1);
 	}
 	
+	@Test
+	void testeDeReiniciar() {
+		Campo campo13 = new Campo(1, 1);
+		
+        assertTrue(campo13.reiniciar());    
+	}
+		
+	@Test
+	void objetivoAlcancado() {
+		Campo campo13 = new Campo(1, 1);
+		campo13.abrir();
+		
+		assertTrue(campo13.objetivoAlcancado());
+	}
+	
+	@Test
+	void objetivoAlcancado2() {
+		Campo campo13 = new Campo(1, 1);
+		campo13.minar();
+		campo13.alterarMarcado();
+		
+		assertTrue(campo13.objetivoAlcancado());
+	}
+	
+	@Test
+	void saidaToStringMarcado() {
+
+		Campo campo13 = new Campo(1, 1);
+		campo13.alterarMarcado();
+		
+		assertEquals("X", campo13.toString());
+	}
+	
+	@Test
+	void saidaToStringAbertoEMinado() {
+		Campo campo13 = new Campo(1, 1);
+		campo13.abrir();
+		campo13.minar();
+	
+		assertEquals("*", campo13.toString());
+	}
+	
+	@Test
+	void saidaToStringAbertoEMinaVizinhos () {
+		Campo campo13 = new Campo(1, 1);
+		campo13.abrir();
+		
+		Campo campo14 = new Campo(2, 2);
+		campo14.minar();
+		campo13.adicionarVizinho(campo14);
+		
+		assertEquals("1", campo13.toString());
+	}
+	
+	@Test
+	void saidaToStringAberto() {
+		Campo campo13 = new Campo(1, 1);
+		campo13.abrir();
+		
+		assertEquals(" ", campo13.toString());
+	}
+	
+	@Test
+	void saidaToStringNaoMexido() {
+		Campo campo13 = new Campo(1, 1);
+		
+		assertEquals("?", campo13.toString());
+	}
 }

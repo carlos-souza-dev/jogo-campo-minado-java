@@ -49,18 +49,73 @@ public class TabuleiroConsole {
 					
 				System.out.println(tabuleiro);			
 				
-				String digitado = capturaValorDigitado("Digite (x, y): ");
+				String digitado = null;
+				String acao = "B";
+				int x;
+				int y;
+				boolean isNumero = false;
+				char[] numeros;
+				boolean inputX = false;
+				boolean inputY = false;
+				boolean inputAM = false;
+//				PROFESSOR
+//				Iterator<Integer> xy;
 				
-				Iterator<Integer> xy = Arrays.stream(digitado.split(","))
-						.map(e -> Integer.parseInt(e.trim())).iterator();
+				do {
 				
-				digitado = capturaValorDigitado("A = Abrir ou M = (Des)Marcar: ");
+					if(inputX && inputY) {
+						System.out.println("Valore de 'X' deve ser de 0 até "+(tabuleiro.getLinhas()-1)+" e 'Y' deve ser de 0 até "+(tabuleiro.getColunas()-1));
+					} else if(inputY) {
+						System.out.println("Valor de 'Y' deve ser de 0 até "+(tabuleiro.getColunas()-1));
+					} else if(inputX) {
+						System.out.println("Valor de 'X' deve ser de 0 até "+(tabuleiro.getLinhas()-1));
+					}
+					
+					do {
+						
+						if(!isNumero) {
+							System.out.println("Válido somente números");
+						}
+						
+						digitado = capturaValorDigitado("Digite (X, Y): ");
+						
+//						PROFESSOR
+//						xy = Arrays.stream(digitado.split(","))
+//							.map(e -> Integer.parseInt(e.trim())).iterator();
+					
+					String[] input = digitado.split(",");
+					numeros = input[0].toCharArray();
+					numeros = input[1].toCharArray();
+					isNumero = (Character.isDigit(input[0].charAt(0)) && Character.isDigit(input[1].charAt(0)));
+					
+					} while (!isNumero);
+					
+					x = numeros[0];
+					y = numeros[0];
+					
+//					PROFESSOR
+//					x = xy.next();
+//					y = xy.next();
+					
+					inputX = ((x < 0 || x >= tabuleiro.getLinhas()));
+					inputY = ((y < 0 || y >= tabuleiro.getColunas()));
+					
+				} while (!inputX || !inputY);
 				
-				if("A".equalsIgnoreCase(digitado)) {
-					tabuleiro.abrir(xy.next(), xy.next());
-				} else if ("M".equalsIgnoreCase(digitado)) {
-					tabuleiro.alterarMarcado(xy.next(), xy.next());
-				}
+				do {
+					
+					acao = capturaValorDigitado("A = Abrir ou M = (Des)Marcar: ");
+					
+					if("A".equalsIgnoreCase(acao)) {
+						tabuleiro.abrir(x, y);
+					} else if ("M".equalsIgnoreCase(acao)) {
+						tabuleiro.alterarMarcado(x, y);
+					}					
+					
+					inputAM = ("A".equalsIgnoreCase(acao) || "M".equalsIgnoreCase(acao)); // Se um dos dois campos for verdadeiro retora verdadeiro.
+					
+				} while (!inputAM); // While recebe a negação do inputAM
+				
 			}
 			
 			System.out.println(tabuleiro);

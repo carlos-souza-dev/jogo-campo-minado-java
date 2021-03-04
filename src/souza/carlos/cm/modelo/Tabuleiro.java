@@ -78,19 +78,13 @@ public class Tabuleiro {
 		  
 		  int i = 0;
 		  for(int indice = 0; indice < 1; indice++) {
+			  sb.append(" ");
+			  sb.append(" ");
+			  sb.append(" ");
 			  for(int coluna = 0; coluna < this.colunas; coluna++) {
-				  if(coluna == 0) {
-					  sb.append(" ");
-					  sb.append(" ");
-					  sb.append(" ");
-					  sb.append(" ");
-					  sb.append(coluna);
-					  sb.append(" ");
-				  } else {
-					  sb.append(" ");
-					  sb.append(coluna);
-					  sb.append(" ");
-				  }
+				  sb.append(" ");
+				  sb.append(coluna);
+				  sb.append(" ");
 			  }
 			  sb.append("\n");
 			  
@@ -111,17 +105,10 @@ public class Tabuleiro {
 		return sb.toString();
 	}
 //
-//	public int getLinhas() {
-//		return linhas;
-//	}
-//	public void setLinhas(int linhas) {
-//		this.linhas = linhas;
-//	}
-//	public int getColunas() {
-//		return colunas;
-//	}
-//	public void setColunas(int colunas) {
-//		this.colunas = colunas;
-//	}
-	
+	public int getLinhas() {
+		return linhas;
+	}
+	public int getColunas() {
+		return colunas;
+	}	
 }

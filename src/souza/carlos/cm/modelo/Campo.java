@@ -73,6 +73,10 @@ public class Campo {
 		this.minado = true;
 	}
 	
+	public boolean isMinado() {
+		return this.minado;
+	}
+	
 	public boolean isMarcado() {
 		return marcado;
 	}
@@ -81,6 +85,10 @@ public class Campo {
 		return this.aberto;
 	}
 	
+	void setAberto(boolean aberto) {
+		this.aberto = aberto;
+	}
+
 	public boolean isFechado() {
 		return !isAberto();
 	}
